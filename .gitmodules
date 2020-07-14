@@ -1,0 +1,4 @@
+[submodule "idealis_pw_v13"]
+	path = idealis_pw_v13
+	url = git@git.myidealis.be:plw/appserver_v13.git
+	branch = develop
