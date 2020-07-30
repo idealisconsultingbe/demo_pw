@@ -9,8 +9,26 @@ class StockPicking(models.Model):
 
     def action_generate_backorder_wizard(self):
         backorder = self.env['stock.backorder.confirmation'].create({'pick_ids': [(4, p.id) for p in self]})
-        if self.picking_type_id.auto_backorder:
-            backorder.process()
+        if self.picking_type_id.code == 'incoming' and self.partner_id:
+            if self.partner_id.auto_backorder_receipt:
+                if self.partner_id.auto_backorder_receipt == 'auto_creation':
+                    backorder.process()
+                elif self.partner_id.auto_backorder_receipt == 'auto_cancel':
+                    backorder.process_cancel_backorder()
+                else:
+                    return super(StockPicking, self).action_generate_backorder_wizard()
+        elif self.picking_type_id.code == 'outgoing' and self.partner_id:
+            if self.partner_id.auto_backorder_delivery:
+                if self.partner_id.auto_backorder_delivery == 'auto_creation':
+                    backorder.process()
+                elif self.partner_id.auto_backorder_delivery == 'auto_cancel':
+                    backorder.process_cancel_backorder()
+                else:
+                    return super(StockPicking, self).action_generate_backorder_wizard()
         else:
-            backorder.process_cancel_backorder()
-        super(StockPicking, self).action_generate_backorder_wizard()
+            if self.picking_type_id.backorder_automation == 'auto_creation':
+                backorder.process()
+            elif self.picking_type_id.backorder_automation == 'auto_cancel':
+                backorder.process_cancel_backorder()
+            else:
+                return super(StockPicking, self).action_generate_backorder_wizard()

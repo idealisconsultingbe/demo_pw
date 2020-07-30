@@ -32,7 +32,8 @@
         A flag on the Operation Type will determine if a picking's backorder will be automatically created, or not.
         """,
     'data': [
-        'views/stock_picking_type_views.xml'
+        'views/stock_picking_type_views.xml',
+        'views/res_partner_views.xml'
     ],
     'installable': True,
     'auto_install': False,

@@ -7,4 +7,7 @@ from odoo import api, fields, models
 class StockPickingType(models.Model):
     _inherit = 'stock.picking.type'
 
-    auto_backorder = fields.Boolean(string='Automatic Backorder')
+    backorder_automation = fields.Selection(string='Backorder Automation',
+                                            selection=[('auto_creation', 'Automatic Creation'),
+                                                       ('auto_cancel', 'Automatic Cancellation'),
+                                                       ('manual', 'Manual')])
